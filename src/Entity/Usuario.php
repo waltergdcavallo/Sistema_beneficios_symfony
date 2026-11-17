@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\UserRole;
 use App\Repository\UsuarioRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UsuarioRepository::class)]
@@ -40,6 +42,24 @@ class Usuario
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Foto = null;
+
+    /**
+     * @var Collection<int, Historial>
+     */
+    #[ORM\OneToMany(targetEntity: Historial::class, mappedBy: 'Id_usuario')]
+    private Collection $Historial;
+
+    /**
+     * @var Collection<int, Venta>
+     */
+    #[ORM\OneToMany(targetEntity: Venta::class, mappedBy: 'Id_usuario')]
+    private Collection $Ventas;
+
+    public function __construct()
+    {
+        $this->Historial = new ArrayCollection();
+        $this->Ventas = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,6 +170,66 @@ class Usuario
     public function setFoto(?string $Foto): static
     {
         $this->Foto = $Foto;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Historial>
+     */
+    public function getHistorial(): Collection
+    {
+        return $this->Historial;
+    }
+
+    public function addHistorial(Historial $historial): static
+    {
+        if (!$this->Historial->contains($historial)) {
+            $this->Historial->add($historial);
+            $historial->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorial(Historial $historial): static
+    {
+        if ($this->Historial->removeElement($historial)) {
+            // set the owning side to null (unless already changed)
+            if ($historial->getIdUsuario() === $this) {
+                $historial->setIdUsuario(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Venta>
+     */
+    public function getVentas(): Collection
+    {
+        return $this->Ventas;
+    }
+
+    public function addVenta(Venta $venta): static
+    {
+        if (!$this->Ventas->contains($venta)) {
+            $this->Ventas->add($venta);
+            $venta->setIdUsuario($this);
+        }
+
+        return $this;
+    }
+
+    public function removeVenta(Venta $venta): static
+    {
+        if ($this->Ventas->removeElement($venta)) {
+            // set the owning side to null (unless already changed)
+            if ($venta->getIdUsuario() === $this) {
+                $venta->setIdUsuario(null);
+            }
+        }
 
         return $this;
     }

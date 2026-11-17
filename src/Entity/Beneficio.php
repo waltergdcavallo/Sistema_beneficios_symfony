@@ -4,6 +4,8 @@ namespace App\Entity;
 
 use App\Enum\Status;
 use App\Repository\BeneficioRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +34,20 @@ class Beneficio
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $Imagen = null;
+
+    /**
+     * @var Collection<int, Historial>
+     */
+    #[ORM\OneToMany(targetEntity: Historial::class, mappedBy: 'Id_beneficio')]
+    private Collection $Historial;
+
+    #[ORM\OneToOne(mappedBy: 'Id_beneficio', cascade: ['persist', 'remove'])]
+    private ?Producto $Producto = null;
+
+    public function __construct()
+    {
+        $this->Historial = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -106,6 +122,58 @@ class Beneficio
     public function setImagen(?string $Imagen): static
     {
         $this->Imagen = $Imagen;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Historial>
+     */
+    public function getHistorial(): Collection
+    {
+        return $this->Historial;
+    }
+
+    public function addHistorial(Historial $historial): static
+    {
+        if (!$this->Historial->contains($historial)) {
+            $this->Historial->add($historial);
+            $historial->setIdBeneficio($this);
+        }
+
+        return $this;
+    }
+
+    public function removeHistorial(Historial $historial): static
+    {
+        if ($this->Historial->removeElement($historial)) {
+            // set the owning side to null (unless already changed)
+            if ($historial->getIdBeneficio() === $this) {
+                $historial->setIdBeneficio(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getProducto(): ?Producto
+    {
+        return $this->Producto;
+    }
+
+    public function setProducto(?Producto $Producto): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($Producto === null && $this->Producto !== null) {
+            $this->Producto->setIdBeneficio(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($Producto !== null && $Producto->getIdBeneficio() !== $this) {
+            $Producto->setIdBeneficio($this);
+        }
+
+        $this->Producto = $Producto;
 
         return $this;
     }
