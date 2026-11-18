@@ -11,7 +11,7 @@ final class DetalleVentaController extends AbstractController
     #[Route('/detalle/venta', name: 'app_detalle_venta')]
     public function index(): Response
     {
-        return $this->render('detalle_venta/index.html.twig', [
+        return $this->render('detalle_venta/lista.html.twig', [
             'controller_name' => 'DetalleVentaController',
         ]);
     }

@@ -11,7 +11,7 @@ final class ProductoController extends AbstractController
     #[Route('/producto', name: 'app_producto')]
     public function index(): Response
     {
-        return $this->render('producto/index.html.twig', [
+        return $this->render('producto/lista.html.twig', [
             'controller_name' => 'ProductoController',
         ]);
     }

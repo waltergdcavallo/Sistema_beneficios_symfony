@@ -11,7 +11,7 @@ final class VentaController extends AbstractController
     #[Route('/venta', name: 'app_venta')]
     public function index(): Response
     {
-        return $this->render('venta/index.html.twig', [
+        return $this->render('venta/lista.html.twig', [
             'controller_name' => 'VentaController',
         ]);
     }

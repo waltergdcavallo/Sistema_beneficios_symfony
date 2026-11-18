@@ -11,7 +11,7 @@ final class UsuarioController extends AbstractController
     #[Route('/usuario', name: 'app_usuario')]
     public function index(): Response
     {
-        return $this->render('usuario/index.html.twig', [
+        return $this->render('usuario/lista.html.twig', [
             'controller_name' => 'UsuarioController',
         ]);
     }

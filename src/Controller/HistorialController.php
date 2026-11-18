@@ -11,7 +11,7 @@ final class HistorialController extends AbstractController
     #[Route('/historial', name: 'app_historial')]
     public function index(): Response
     {
-        return $this->render('historial/index.html.twig', [
+        return $this->render('historial/lista.html.twig', [
             'controller_name' => 'HistorialController',
         ]);
     }
