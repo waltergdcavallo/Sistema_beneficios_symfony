@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Venta;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<Venta>
@@ -16,6 +17,20 @@ class VentaRepository extends ServiceEntityRepository
         parent::__construct($registry, Venta::class);
     }
 
+    public function findVentas(): Query
+    {
+        return $this->createQueryBuilder('v')
+        ->orderBy('v.id', 'ASC')
+        ->getQuery();
+    }
+
+    public function findVentasConDetalle(): Query
+    {
+        return $this->createQueryBuilder('v')
+        ->orderBy('v.id', 'ASC')
+        ->getQuery();
+    }
+    
 //    /**
 //     * @return Venta[] Returns an array of Venta objects
 //     */

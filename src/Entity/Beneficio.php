@@ -44,6 +44,9 @@ class Beneficio
     #[ORM\OneToOne(mappedBy: 'Id_beneficio', cascade: ['persist', 'remove'])]
     private ?Producto $Producto = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $Creador = null;
+
     public function __construct()
     {
         $this->Historial = new ArrayCollection();
@@ -174,6 +177,18 @@ class Beneficio
         }
 
         $this->Producto = $Producto;
+
+        return $this;
+    }
+
+    public function getCreador(): ?string
+    {
+        return $this->Creador;
+    }
+
+    public function setCreador(string $Creador): static
+    {
+        $this->Creador = $Creador;
 
         return $this;
     }

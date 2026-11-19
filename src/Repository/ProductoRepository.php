@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Producto;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<Producto>
@@ -14,6 +15,34 @@ class ProductoRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Producto::class);
+    }
+
+    public function findProductosAlfabeticamente(): Query
+    {
+        return $this->createQueryBuilder('p')
+        ->orderBy('p.nombre', 'ASC')
+        ->getQuery();
+    }
+
+    public function findProductoByBeneficio(int $beneficioId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->andWhere('p.beneficio = :beneficioId')
+            ->setParameter('beneficioId', $beneficioId)
+            ->orderBy('p.id', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findByVenta(int $ventaId): array
+    {
+        return $this->createQueryBuilder('p')
+            ->distinct()
+            ->innerJoin('p.detallesVenta', 'dv')
+            ->andWhere('dv.venta = :ventaId')
+            ->setParameter('ventaId', $ventaId)
+            ->getQuery()
+            ->getResult();
     }
 
 //    /**

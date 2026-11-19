@@ -233,4 +233,9 @@ class Usuario
 
         return $this;
     }
+
+    public function getNombreYApellido(): string
+    {
+        return $this->nombre." ".$this->apellido;
+    }
 }

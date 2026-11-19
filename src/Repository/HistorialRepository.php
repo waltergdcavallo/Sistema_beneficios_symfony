@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\Historial;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<Historial>
@@ -14,6 +15,13 @@ class HistorialRepository extends ServiceEntityRepository
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, Historial::class);
+    }
+
+    public function findHistorial(): Query
+    {
+        return $this->createQueryBuilder('h')
+        ->orderBy('h.id', 'ASC')
+        ->getQuery();
     }
 
 //    /**

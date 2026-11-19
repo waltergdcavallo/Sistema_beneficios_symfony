@@ -5,6 +5,7 @@ namespace App\Repository;
 use App\Entity\DetalleVenta;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\ORM\Query;
 
 /**
  * @extends ServiceEntityRepository<DetalleVenta>
